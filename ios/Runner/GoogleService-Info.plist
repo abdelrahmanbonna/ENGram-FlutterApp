@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>622875572589-lkj6bnr8e615o00c6ubfjlm0ljmjnvfh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.622875572589-lkj6bnr8e615o00c6ubfjlm0ljmjnvfh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyC6_Z_NN0V96DkSr6lyACaMuLrFtuO-9io</string>
+	<key>GCM_SENDER_ID</key>
+	<string>622875572589</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.graduationproject.engram</string>
+	<key>PROJECT_ID</key>
+	<string>engram-fa550</string>
+	<key>STORAGE_BUCKET</key>
+	<string>engram-fa550.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:622875572589:ios:286d23b27995f50801c264</string>
+	<key>DATABASE_URL</key>
+	<string>https://engram-fa550.firebaseio.com</string>
+</dict>
+</plist>

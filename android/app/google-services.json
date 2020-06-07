@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "622875572589",
+    "firebase_url": "https://engram-fa550.firebaseio.com",
+    "project_id": "engram-fa550",
+    "storage_bucket": "engram-fa550.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:622875572589:android:332098e1db0f1b1901c264",
+        "android_client_info": {
+          "package_name": "com.graduationproject.engram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "622875572589-ttbc6t21hlphsfn6vbefitgoac89tphs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhd3IFrd0X0-Akomdoamf1GKjEUyVh5EA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "622875572589-ttbc6t21hlphsfn6vbefitgoac89tphs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
