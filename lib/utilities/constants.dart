@@ -11,3 +11,5 @@ final kAppTheme = ThemeData(
     subtitle2: TextStyle(fontSize: 16, letterSpacing: 0.25),
   ),
 );
+
+const kColorWhite = Color(0xffEAEAEA);

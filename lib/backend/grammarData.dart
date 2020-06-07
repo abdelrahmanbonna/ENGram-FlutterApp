@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 class GrammarData extends ChangeNotifier {
   List<Grammar> _list = [];
+  String _input;
   var _fire = Firestore.instance;
 
   Future<void> getDataFromFirebase() async {
@@ -14,7 +15,6 @@ class GrammarData extends ChangeNotifier {
     final grammars = await _fire.collection('grammar').getDocuments();
 
     for (var grammar in grammars.documents) {
-      print(grammar.data.toString());
       Map<dynamic, dynamic> map =
           json.decode(grammar.data.toString()) as Map<String, dynamic>;
       _list.add(Grammar(
@@ -40,18 +40,23 @@ class GrammarData extends ChangeNotifier {
         ),
       );
     }
+
     return listofItems;
   }
 
-  String getGrammer(String name) {
+  setInput(String inp) {
+    _input = inp;
+    notifyListeners();
+  }
+
+  String getGrammar() {
     String grammar = "";
     for (var item in _list) {
-      if (item.name == name) {
+      print("this is the name  " + item.name);
+      print("this is the input  " + _input);
+      if (item.name == _input) {
         grammar = item.grammar;
       }
-    }
-    if (grammar == "") {
-      grammar = "not found";
     }
 
     return grammar;

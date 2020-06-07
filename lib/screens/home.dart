@@ -1,7 +1,10 @@
 import 'package:engram/backend/grammarData.dart';
+import 'package:engram/screens/about.dart';
 import 'package:engram/utilities/constants.dart';
+import 'package:engram/utilities/e_n_g_r_a_m_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
   static String id = "home";
@@ -11,13 +14,23 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String valueSelected;
+  String valueSelected, grammars = "";
   List<DropdownMenuItem> menuItems;
+  GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
   @override
   void initState() {
     super.initState();
     getData();
+  }
+
+  _launchURL() async {
+    const url = 'https://github.com/abdelrahmanbonna/ENGram-FlutterApp';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   void getData() async {
@@ -29,9 +42,92 @@ class _HomeState extends State<Home> {
     }
   }
 
+  getGrammar() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: Drawer(
+        elevation: 40,
+        child: Container(
+          color: kAppTheme.primaryColor,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.3,
+              ),
+              Container(
+                height: MediaQuery.of(context).size.height * 0.7,
+                width: MediaQuery.of(context).size.width,
+                color: kAppTheme.accentColor,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.1,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: FlatButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, About.id);
+                        },
+                        padding: EdgeInsets.all(10),
+                        color: kAppTheme.primaryColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Icon(
+                              ENGRAM.about,
+                              size: 50,
+                              color: kColorWhite,
+                            ),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.1,
+                            ),
+                            Text(
+                              'About',
+                              style: kAppTheme.textTheme.subtitle2
+                                  .merge(TextStyle(color: kColorWhite)),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    FlatButton(
+                      color: kAppTheme.primaryColor,
+                      onPressed: () {
+                        _launchURL();
+                      },
+                      padding: EdgeInsets.all(10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Icon(
+                            ENGRAM.github_image,
+                            size: 50,
+                            color: kColorWhite,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                          ),
+                          Text(
+                            'Github Repository',
+                            style: kAppTheme.textTheme.subtitle2
+                                .merge(TextStyle(color: kColorWhite)),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
       backgroundColor: kAppTheme.primaryColor,
       body: SafeArea(
         child: SingleChildScrollView(
@@ -45,7 +141,9 @@ class _HomeState extends State<Home> {
                         color: Colors.white,
                         size: 30,
                       ),
-                      onPressed: () {}),
+                      onPressed: () {
+                        _scaffoldKey.currentState.openDrawer();
+                      }),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: Text(
@@ -77,12 +175,15 @@ class _HomeState extends State<Home> {
                           .subtitle1
                           .merge(TextStyle(color: kAppTheme.primaryColor)),
                       items: menuItems,
-//                      onChanged: (value) {
-//                        setState(() {
-//                          valueSelected = value;
-//                        });
-//                      },
+                      onChanged: (value) {
+                        valueSelected = value;
+                      },
                       value: valueSelected,
+                      elevation: 0,
+                      onTap: () {
+                        Provider.of<GrammarData>(context, listen: false)
+                            .setInput(valueSelected);
+                      },
                       hint: Text(
                         "Choose Grammar name",
                         textAlign: TextAlign.center,
@@ -109,8 +210,8 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      Provider.of<GrammarData>(context)
-                          .getGrammer(valueSelected),
+                      Provider.of<GrammarData>(context, listen: true)
+                          .getGrammar(),
                       style: kAppTheme.textTheme.subtitle2.merge(
                         TextStyle(color: kAppTheme.primaryColor),
                       ),
