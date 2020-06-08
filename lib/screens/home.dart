@@ -168,26 +168,31 @@ class _HomeState extends State<Home> {
                       color: Colors.white,
                       borderRadius: BorderRadius.all(Radius.circular(30)),
                     ),
-                    child: DropdownButton(
-                      style: Theme.of(context)
-                          .textTheme
-                          .subtitle1
-                          .merge(TextStyle(color: kAppTheme.primaryColor)),
-                      items: menuItems,
-                      onChanged: (value) {
-                        setState(() {
-                          valueSelected = value;
-                        });
-                      },
-                      value: valueSelected,
-                      elevation: 0,
-                      hint: Text(
-                        "Choose Grammar name",
-                        textAlign: TextAlign.center,
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
                         style: Theme.of(context)
                             .textTheme
                             .subtitle1
                             .merge(TextStyle(color: kAppTheme.primaryColor)),
+                        items: menuItems,
+                        onChanged: (value) {
+                          setState(() {
+                            valueSelected = value;
+                          });
+                        },
+                        value: valueSelected,
+                        autofocus: false,
+                        dropdownColor: Colors.white,
+                        isExpanded: true,
+                        elevation: 0,
+                        hint: Text(
+                          "Choose Grammar name",
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              .merge(TextStyle(color: kAppTheme.primaryColor)),
+                        ),
                       ),
                     ),
                   ),
