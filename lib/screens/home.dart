@@ -14,7 +14,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  String valueSelected, grammars = "";
+  String valueSelected;
+
   List<DropdownMenuItem> menuItems;
   GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
 
@@ -37,12 +38,10 @@ class _HomeState extends State<Home> {
     await Provider.of<GrammarData>(context, listen: false)
         .getDataFromFirebase();
     menuItems = Provider.of<GrammarData>(context, listen: false).getListItems();
-    if (menuItems.length == null) {
+    if (menuItems.length == 0) {
       print("error: list is empty");
     }
   }
-
-  getGrammar() {}
 
   @override
   Widget build(BuildContext context) {
@@ -176,14 +175,12 @@ class _HomeState extends State<Home> {
                           .merge(TextStyle(color: kAppTheme.primaryColor)),
                       items: menuItems,
                       onChanged: (value) {
-                        valueSelected = value;
+                        setState(() {
+                          valueSelected = value;
+                        });
                       },
                       value: valueSelected,
                       elevation: 0,
-                      onTap: () {
-                        Provider.of<GrammarData>(context, listen: false)
-                            .setInput(valueSelected);
-                      },
                       hint: Text(
                         "Choose Grammar name",
                         textAlign: TextAlign.center,
@@ -199,6 +196,7 @@ class _HomeState extends State<Home> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.85,
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.only(
@@ -210,10 +208,13 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      Provider.of<GrammarData>(context, listen: true)
-                          .getGrammar(),
+                      valueSelected != null
+                          ? "${valueSelected}"
+                          : "No grammar selected",
                       style: kAppTheme.textTheme.subtitle2.merge(
-                        TextStyle(color: kAppTheme.primaryColor),
+                        TextStyle(
+                            color: kAppTheme.primaryColor,
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     Text(

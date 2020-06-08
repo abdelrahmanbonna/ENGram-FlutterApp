@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 
 class GrammarData extends ChangeNotifier {
   List<Grammar> _list = [];
-  String _input;
+
   var _fire = Firestore.instance;
 
   Future<void> getDataFromFirebase() async {
@@ -37,28 +37,11 @@ class GrammarData extends ChangeNotifier {
               TextStyle(color: kAppTheme.primaryColor),
             ),
           ),
+          value: grammar.grammar,
         ),
       );
     }
 
     return listofItems;
-  }
-
-  setInput(String inp) {
-    _input = inp;
-    notifyListeners();
-  }
-
-  String getGrammar() {
-    String grammar = "";
-    for (var item in _list) {
-      print("this is the name  " + item.name);
-      print("this is the input  " + _input);
-      if (item.name == _input) {
-        grammar = item.grammar;
-      }
-    }
-
-    return grammar;
   }
 }

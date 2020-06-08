@@ -65,7 +65,7 @@ class About extends StatelessWidget {
                           " Made to help Students to know the grammar faster"
                           "\n\nMade by Abdelrahman Bonna\n"
                           "Email: abdelrahmanbonna@outlook.com\n",
-                          style: kAppTheme.textTheme.headline1.merge(
+                          style: kAppTheme.textTheme.headline2.merge(
                             TextStyle(color: kAppTheme.primaryColor),
                           ),
                           textAlign: TextAlign.center,
