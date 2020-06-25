@@ -1,9 +1,9 @@
-import 'package:engram/backend/grammarData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:engram/screens/about.dart';
 import 'package:engram/utilities/constants.dart';
 import 'package:engram/utilities/e_n_g_r_a_m_icons.dart';
+import 'package:engram/utilities/gramWidget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatefulWidget {
@@ -22,7 +22,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    getData();
   }
 
   _launchURL() async {
@@ -31,15 +30,6 @@ class _HomeState extends State<Home> {
       await launch(url);
     } else {
       throw 'Could not launch $url';
-    }
-  }
-
-  void getData() async {
-    await Provider.of<GrammarData>(context, listen: false)
-        .getDataFromFirebase();
-    menuItems = Provider.of<GrammarData>(context, listen: false).getListItems();
-    if (menuItems.length == 0) {
-      print("error: list is empty");
     }
   }
 
@@ -156,79 +146,61 @@ class _HomeState extends State<Home> {
                   )
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.08,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 20, right: 20),
-                    width: MediaQuery.of(context).size.width * 0.9,
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(30)),
-                    ),
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton(
-                        style: Theme.of(context)
-                            .textTheme
-                            .subtitle1
-                            .merge(TextStyle(color: kAppTheme.primaryColor)),
-                        items: menuItems,
-                        onChanged: (value) {
-                          setState(() {
-                            valueSelected = value;
-                          });
-                        },
-                        value: valueSelected,
-                        autofocus: false,
-                        dropdownColor: Colors.white,
-                        isExpanded: true,
-                        elevation: 0,
-                        hint: Text(
-                          "Choose Grammar name",
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context)
-                              .textTheme
-                              .subtitle1
-                              .merge(TextStyle(color: kAppTheme.primaryColor)),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height * 0.85,
+                height: MediaQuery.of(context).size.height * 0.855,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
                 decoration: BoxDecoration(
                   color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      StreamBuilder<QuerySnapshot>(
+                        stream: Firestore.instance
+                            .collection('grammar')
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 0.8,
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              child: Text("No Data yet"),
+                            );
+                          } else {
+                            final grammars = snapshot.data.documents;
+                            List<GramWidget> bubbles = [];
+
+                            for (var grammar in grammars) {
+                              bubbles.add(GramWidget(
+                                title: grammar.data['"name"'].toString().trim(),
+                                grammar:
+                                    "${grammar.data['"grammar"'].toString().trim()}",
+                                examples: "\nExamples:\n" +
+                                    "${grammar.data['"examples"'].toString().trim()}",
+                              ));
+                            }
+                            return Column(
+                              children: bubbles,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   ),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Text(
-                      valueSelected != null
-                          ? "${valueSelected}"
-                          : "No grammar selected",
-                      style: kAppTheme.textTheme.subtitle2.merge(
-                        TextStyle(
-                            color: kAppTheme.primaryColor,
-                            fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                    Text(
-                      "All Rights Reserved © 2020 AbSolutions",
-                      style: kAppTheme.textTheme.subtitle2.merge(
-                        TextStyle(color: kAppTheme.primaryColor),
-                      ),
-                    ),
-                  ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "All Rights Reserved © 2020 AbSolutions",
+                  style: kAppTheme.textTheme.subtitle2.merge(
+                    TextStyle(color: kColorWhite),
+                  ),
                 ),
               ),
             ],
